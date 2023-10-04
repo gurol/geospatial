@@ -25,7 +25,7 @@ For more information, visit the GitHub repository:
 https://github.com/gurol/geospatial
 
 License:
-This script is distributed under the MIT License. See the LICENSE file for details.
+This script is distributed under the GNU Affero General Public License v3.0 License. See the LICENSE file for details.
 """
 def parse_dwg_version(file_path):
     version_map = {
