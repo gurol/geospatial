@@ -1,7 +1,5 @@
 # Geospatial Utilities
 Geospatial utilities (AutoCAD, DWG/DXF, GeoJSON, ...)
-
-Sure, I'll provide an explanation for the code and the output table to include in your README.md.
 - dwgversion.py
 - analyzedxf.py
 
