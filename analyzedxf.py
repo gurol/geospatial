@@ -2,8 +2,8 @@
 analyzedxf.py - A Python script for analyzing DXF (Drawing Exchange Format) files.
 
 Author: Gürol Canbek
-Date: 24 August 2023
-Version: 1.0
+Date: 23 October 2023, 24 August 2023
+Version: 1.1
 
 Description:
 This script analyzes a DXF file, providing a summary of the entities per layer, including common entity types and block information. The results are displayed on the console and saved to a tab-separated text file.
@@ -116,6 +116,6 @@ if __name__ == "__main__":
     else:
         dxf_file_path = sys.argv[1]
         print("Analyzing DXF...")
-        results, total_results = analyze_dxf(dxf_file_path)
-        display_and_save_results(results, total_results, dxf_file_path)
+        results = analyze_dxf(dxf_file_path)
+        display_and_save_results(results, dxf_file_path)
         print("DXF File Analyzer by Gürol Canbek")
