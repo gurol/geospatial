@@ -1,9 +1,10 @@
 # Geospatial Utilities
 Geospatial utilities (AutoCAD, DWG/DXF, GeoJSON, ...)
-- dwgversion.py
-- analyzedxf.py
+- `dwgversion.py`
+- `analyzedxf.py`
+- `geojson_analyzer.py` and `geojson_folder_analyzer.py`
 
-## DXF File Analyzer (analyzedxf.py)
+## DXF File Analyzer (`analyzedxf.py`)
 
 ### Overview
 
@@ -25,14 +26,14 @@ python analyzedxf.py path_to_dxf_file.dxf
 
 ### Output
 
-The script produces a tab-separated text file (`.txt`) containing a summary of the DXF file's composition. The output includes the following columns:
+The script produces a tab-separated text file (`.txt`) containing a DXF file composition summary. The output includes the following columns:
 
 - **Layer Name**: The name of each layer within the DXF file.
 - **Total**: The total count of entities on the layer.
 - **POINT, LINE, POLYLINE, LWPOLYLINE, ARC, CIRCLE, ELLIPSE, SPLINE, TEXT, MTEXT, HATCH, DIMENSION**: Counts of specific entity types on the layer.
 - **Other types**: Counts of entity types that do not fall into the predefined categories. Unique entity types are counted individually.
-- **INSERT**: Counts of INSERT entities, which represent blocks that have been inserted into the drawing.
-- **BLOCKS**: Lists the names of blocks present on the layer and their counts.
+- **INSERT**: Counts of INSERT entities, which represent blocks inserted into the drawing.
+- **BLOCKS**: Lists the names of blocks on the layer and their counts.
 
 Layers are listed in descending order of entity count, from the highest to the lowest.
 
@@ -58,3 +59,104 @@ FIXT        16      0       0       0           0           0   1       0       
 ```
 
 This table provides a breakdown of entity types and block counts on different layers within the DXF file, offering valuable insights into its composition.
+
+## GeoJSON File and Folder Analyzer (`geojson_analyzer.py` and `geojson_folder_analyzer`)
+
+### geojson_analyzer.py
+
+#### Overview
+`geojson_analyzer.py` is a comprehensive Python script designed to analyze the content of a GeoJSON file. It provides detailed statistics on the number of features, geometry types, property fields, and their values. The script can output the results both to the console and a text file in the same directory as the input GeoJSON file.
+
+#### Features 
+- **Feature Count:**  Calculates the total number of features in the GeoJSON file.
+- **Geometry Types:**  Provides a count of features per geometry type (e.g., Point, LineString, Polygon).
+- **Property Fields Analysis:**  
+  - Aggregates and lists all field names under the `properties` section, including nested fields.
+  - Counts occurrences of each field value, sorted from maximum to minimum frequency.
+- **Combination Analysis:**  Allows counting occurrences of combinations of specified fields under `properties`.
+- **Statistical Analysis:**  Computes basic statistics (mean, median, standard deviation) for numeric fields.
+- **Geospatial Analysis:** 
+  - Calculates the bounding box and centroid of all geometries.
+- **Visualization:**  Generates bar charts for the distribution of geometry types and property values.
+
+#### Usage 
+```sh
+python geojson_analyzer.py <geojson_file_path> [--exclude <exclude_fields>] [--combination <combination_fields>]
+```
+
+**Parameters:**  
+- `<geojson_file_path>`: Path to the GeoJSON file to analyze.
+- `--exclude`: *(Optional)* Comma-separated list of properties to exclude from the analysis (e.g., `'id,style,extra.id'`).
+- `--combination`: *(Optional)* Comma-separated list of field names to combine and count occurrences (e.g., `'code,extra.category'`).
+
+**Example:** 
+```sh
+python geojson_analyzer.py /path/to/your/file.geojson --exclude 'id,style,extra.id' --combination 'code, extra.category'
+```
+
+#### Output 
+- Text file with detailed analysis saved in the same directory as the input GeoJSON file.
+- Console output summarizing the analysis.
+- Visualization images saved as PNG files in the same directory.
+
+---
+
+### geojson_folder_analyzer.py
+
+#### Overview
+`geojson_folder_analyzer.py` is a Python script that analyzes all GeoJSON files within a specified folder. It aggregates statistics across all files and generates a comprehensive CSV report. This utility is ideal for batch processing and comparing multiple GeoJSON datasets.
+
+#### Features 
+- **Batch Processing:**  Analyzes all GeoJSON files in a given directory. 
+- **Feature Count:**  Reports the number of features per file.
+- **Geometry Types:**  Counts the number of features per geometry type for each file.
+- **Property Fields Analysis:** 
+  - Counts occurrences of specified field values across all files.
+  - Supports sorting of CSV columns based on the average number of occurrences.
+- **Geospatial Summary:** 
+  - Calculates combined bounding box and centroid for all geometries across files.
+- **CSV Customization:** 
+  - Allows specifying a custom delimiter for the output CSV file.
+  - Optionally appends the name of the dumped field to the CSV filename.
+
+#### Usage 
+```sh
+python geojson_folder_analyzer.py <folder_path> [--exclude <exclude_fields>] [--dump <dump_field>] [--delimiter <csv_delimiter>]
+```
+
+**Parameters:**  
+- `<folder_path>`: Path to the folder containing GeoJSON files to analyze. 
+- `--exclude`: *(Optional)* Comma-separated list of properties to exclude (e.g., `'id,style,extra.id'`).
+- `--dump`: *(Optional)* Field name to count occurrences under `properties` (e.g., `'typeCode'`).
+- `--delimiter`: *(Optional)* Delimiter for the CSV file. The default is comma `,`.
+
+**Example:** 
+```sh
+python geojson_folder_analyzer.py /path/to/your/folder --exclude 'id,style,extra.id' --dump 'code' --delimiter ';'
+```
+
+#### Output 
+- CSV file named after the folder (and dumped field if specified), containing:
+  - Feature counts per file.
+  - Geometry-type feature counts per file.
+  - Counts of occurrences of the specified field, sorted by average occurrences across all files.
+- Console output summarizing the process and any combined geospatial information.
+
+---
+
+### Note
+Both scripts require Python 3 and the following Python libraries: 
+- `argparse`
+- `json`
+- `os`
+- `collections` (`defaultdict`, `Counter`)
+- `csv` *`csv` (for `geojson_folder_analyzer.py`)*
+- `numpy` *`numpy` (for statistical calculations in `geojson_analyzer.py`)*
+- `matplotlib` *`matplotlib` (for generating charts in `geojson_analyzer.py`)*
+- `shapely` *(for geospatial calculations)*
+
+**Installation of Required Libraries:** You can install the required libraries using `pip`:
+
+```sh
+pip install numpy matplotlib shapely
+```
