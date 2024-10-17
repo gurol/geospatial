@@ -8,7 +8,7 @@ Geospatial utilities (AutoCAD, DWG/DXF, GeoJSON, ...)
 
 ### Overview
 
-This Python script, `analyzedxf.py`, is designed to analyze DXF (Drawing Exchange Format) files, a common file format used for CAD (Computer-Aided Design) drawings. It provides insights into the composition of the DXF file, including the number of different entity types (e.g., lines, circles, text) and blocks present on each layer. The script generates a detailed summary of these statistics and saves it to a text file.
+This Python script, `analyzedxf.py`, is designed to analyze [DXF (Drawing Exchange Format)](https://www.adobe.com/creativecloud/file-types/image/vector/dxf-file.html) files, a common file format used for CAD (Computer-Aided Design) drawings. It provides insights into the composition of the DXF file, including the number of different entity types (e.g., lines, circles, text) and blocks present on each layer. The script generates a detailed summary of these statistics and saves it to a text file.
 
 ### Usage
 
